@@ -16,8 +16,8 @@ func handler(c *gin.Context) {
 }
 
 type Db struct {
-	Nama      string `json:"nama,omitempty"`
-	Deskripsi string `json:"deskripsi,omitempty"`
+	Text string `json:"text,omitempty"`
+	// Deskripsi string `json:"deskripsi,omitempty"`
 }
 
 var Dbs []Db
