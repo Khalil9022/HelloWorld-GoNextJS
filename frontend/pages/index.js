@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
+
 export default function Home() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null)
@@ -21,18 +22,61 @@ export default function Home() {
     }
   }
 
-  if (error) {
-    return <div>Failed to load {error.toString()}</div>
-  }
+  return (
+    <div>
+      <p>Hello World</p>
+      {error && <div>Failed to load{error.toString()}</div>}
+      {
+        !data ? <div>Loading...</div>
+          : (
+            (data?.data ?? []).length === 0 && <p>data kosong</p>
+          )
+      }
 
-  if (!data) {
-    return <div>Loading...</div>
+      <Input onSuccess={getData} />
+      {data?.data ? data.data.map((item, index) => (
+        <p key={index}>{item} </p>
+      ))
+        : <p>data kosong</p>
+      }
+
+      {/* {data.data.map((item, index) => (
+        <p key={index}>{item}</p>
+      ))} */}
+    </div>
+  )
+}
+
+function Input({ onSuccess }) {
+  const [data, setData] = useState(null)
+  const [error, setError] = useState(null)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const body = {
+      text: formData.get("data")
+    }
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/send`, {
+        method: 'POST',
+        body: JSON.stringify(body)
+      })
+      const data = await res.json()
+      setData(data.message)
+      onSuccess()
+    } catch (error) {
+      setError(error)
+    }
   }
 
   return (
-    <div className={styles.container}>
-      <p>Hello World</p>
-      <p>data : {data.message}</p>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input name='data' type="text" />
+        <button>Submit</button>
+      </form>
     </div>
   )
 }
