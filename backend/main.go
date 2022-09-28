@@ -11,34 +11,35 @@ import (
 
 func handler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"data": Dbs,
+		"data": db,
 	})
 }
 
-type Db struct {
-	Text string `json:"text,omitempty"`
-	// Deskripsi string `json:"deskripsi,omitempty"`
-}
+// type Db struct {
+// 	Text string `json:"text,omitempty"`
+// 	// Deskripsi string `json:"deskripsi,omitempty"`
+// }
 
-var Dbs []Db
+var db []string
 
 type DataRequest struct {
 	Text string `json:"text"`
 }
 
 func postHandler(c *gin.Context) {
-	var newDb Db
-	if err := c.ShouldBindJSON(&newDb); err != nil {
+	var data DataRequest
+	if err := c.ShouldBindJSON(&data); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	Dbs = append(Dbs, newDb)
+	db = append(db, data.Text)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "data berhasil terkirim",
-		"data":    newDb})
+		"data":    data.Text})
 }
 
 func main() {
+	db = make([]string, 0)
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
 		AllowOrigins: []string{"*"}, // untuk sementara kita meng allow kan semuanya ya
