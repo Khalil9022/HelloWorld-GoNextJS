@@ -24,7 +24,7 @@ export default function Home() {
 
   return (
     <div className='container mx-auto'>
-      <h1 className='text-sky-400'>Selamat Datang</h1>
+      <h1 className='text-sky-400'>Selamat Datang Di website</h1>
       <br></br>
       {error && <div>Failed to load{error.toString()}</div>}
       {
