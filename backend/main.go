@@ -7,11 +7,12 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/khalil9022/HelloWorldGoNextJS/database"
 )
 
 func handler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"data": db,
+		"data": database.GetDB(),
 	})
 }
 
@@ -20,7 +21,7 @@ func handler(c *gin.Context) {
 // 	// Deskripsi string `json:"deskripsi,omitempty"`
 // }
 
-var db []string
+// var db []string
 
 type DataRequest struct {
 	Text string `json:"text"`
@@ -28,18 +29,19 @@ type DataRequest struct {
 
 func postHandler(c *gin.Context) {
 	var data DataRequest
+
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	db = append(db, data.Text)
+	database.GetDB().Append(data.Text)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "data berhasil terkirim",
 		"data":    data.Text})
 }
 
 func main() {
-	db = make([]string, 0)
+	database.StartDB()
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
 		AllowOrigins: []string{"*"}, // untuk sementara kita meng allow kan semuanya ya
