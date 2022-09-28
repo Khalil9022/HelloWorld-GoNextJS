@@ -23,19 +23,20 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <p>Hello World</p>
+    <div className='container mx-auto'>
+      <h1 className='text-sky-400'>Hello World</h1>
+      <br></br>
       {error && <div>Failed to load{error.toString()}</div>}
       {
         !data ? <div>Loading...</div>
           : (
-            (data?.data ?? []).length === 0 && <p>data kosong</p>
+            (data?.data ?? []).length === 0
           )
       }
 
       <Input onSuccess={getData} />
       {data?.data ? data.data.map((item, index) => (
-        <p key={index}>{item} </p>
+        <p key={index}>{item.text} </p>
       ))
         : <p>data kosong</p>
       }
@@ -75,7 +76,7 @@ function Input({ onSuccess }) {
     <div>
       <form onSubmit={handleSubmit}>
         <input name='data' type="text" />
-        <button>Submit</button>
+        <button className='rounded bg-sky-500 '>Submit</button>
       </form>
     </div>
   )
