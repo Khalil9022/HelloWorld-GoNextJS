@@ -1,4 +1,4 @@
-module github.com/khalil9022/HelloWorld-GoNextJS
+module github.com/khalil9022/HelloWorldGoNextJS
 
 go 1.19
 
