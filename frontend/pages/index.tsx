@@ -65,7 +65,7 @@ export default function Home() {
       <hr />
       <br />
       {data?.data && data?.data?.map((item, index) => (
-        <div key={index} >
+        <div key={index}>
           <input type="checkbox" checked={item.done} />
           <span>ID: {item.ID} task: {item.task} </span>
           <button onClick={() => handleUpdate(item.ID)} className='bg-sky-500 rounded' style={{ padding: 5, margin: 5, color: 'white' }} >Done</button>

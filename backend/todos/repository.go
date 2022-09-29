@@ -1,6 +1,8 @@
 package todos
 
 import (
+	"log"
+
 	"github.com/khalil9022/HelloWorldGoNextJS/model"
 	"gorm.io/gorm"
 )
@@ -45,12 +47,24 @@ func (r *repository) CreateTodos(task string) (model.Todos, error) {
 }
 
 func (r *repository) UpdateTodos(id string) (model.Todos, error) {
-	todos := model.Todos{
-		Done: true,
+	todos := model.Todos{}
+	err := r.db.First(&todos, "id = ?", id).Error
+
+	if err != nil {
+		return todos, nil
 	}
 
-	err := r.db.Model(&todos).Where("id", id).Updates(&todos).Error
+	if !todos.Done {
+		err = r.db.Model(&todos).Where("ID = ?", id).Update("Done", true).Error
+	} else {
+		err = r.db.Model(&todos).Where("ID = ?", id).Update("Done", false).Error
+	}
+
+	// err = r.db.Save(&todos).Where("ID",id).Error
+	// err = r.db.Model(&todos).Where("ID = ?", id).Update("Done", true).Error
+	// err = r.db.Model(&todos).Where("id", id).Updates(&todos).Error
 	if err != nil {
+		log.Println("update error : ", err)
 		return model.Todos{}, err
 	}
 	return todos, nil
