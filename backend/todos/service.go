@@ -1,6 +1,7 @@
 package todos
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/khalil9022/HelloWorldGoNextJS/model"
@@ -24,6 +25,7 @@ func NewService(repo Repository) *service {
 func (s *service) GetTodos() ([]model.Todos, int, error) {
 	todos, err := s.repo.GetTodos()
 	if err != nil {
+		log.Println("Internal server error : ", err)
 		return nil, http.StatusInternalServerError, err
 	}
 
@@ -34,6 +36,7 @@ func (s *service) CreateTodos(req DataRequest) (model.Todos, int, error) {
 	todo, err := s.repo.CreateTodos(req.Task)
 
 	if err != nil {
+		log.Println("Internal server error : ", err)
 		return model.Todos{}, http.StatusInternalServerError, err
 	}
 
@@ -44,6 +47,7 @@ func (s *service) UpdateTodo(id string) (model.Todos, int, error) {
 	todo, err := s.repo.UpdateTodos(id)
 
 	if err != nil {
+		log.Println("Internal server error : ", err)
 		return model.Todos{}, http.StatusInternalServerError, err
 	}
 
@@ -54,6 +58,7 @@ func (s *service) DeleteTodos(id string) (model.Todos, int, error) {
 	todo, err := s.repo.DeleteTodos(id)
 
 	if err != nil {
+		log.Println("Internal server error : ", err)
 		return model.Todos{}, http.StatusInternalServerError, err
 	}
 
