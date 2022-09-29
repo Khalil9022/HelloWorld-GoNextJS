@@ -26,6 +26,7 @@ func (r *repository) GetTodos() ([]model.Todos, error) {
 	var todos []model.Todos
 	res := r.db.Find(&todos)
 	if res.Error != nil {
+		log.Println("Get Data error : ", res.Error)
 		return nil, res.Error
 	}
 
@@ -40,6 +41,7 @@ func (r *repository) CreateTodos(task string) (model.Todos, error) {
 
 	res := r.db.Create(&todo)
 	if res.Error != nil {
+		log.Println("Create Data error : ", res.Error)
 		return model.Todos{}, res.Error
 	}
 
@@ -75,6 +77,7 @@ func (r *repository) DeleteTodos(id string) (model.Todos, error) {
 
 	err := r.db.Model(&todos).Where("id", id).Delete(&todos).Error
 	if err != nil {
+		log.Println("Delete error : ", err)
 		return model.Todos{}, err
 	}
 	return model.Todos{}, nil
