@@ -35,11 +35,12 @@ export default function Home() {
       }
 
       <Input onSuccess={getData} />
-      {data?.data ? data.data.map((item, index) => (
-        <p key={index}>{item} </p>
-      ))
-        : <p>data kosong</p>
-      }
+      {data?.data && data?.data?.map((item, index) => (
+        <div key={index}>
+          <span>ID: {item.ID} task: {item.task} </span>
+          <input type="checkbox" defaultChecked={item.done} />
+        </div>
+      ))}
 
       {/* {data.data.map((item, index) => (
         <p key={index}>{item}</p>
